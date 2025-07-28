@@ -9,13 +9,15 @@ A robust Node.js backend API built with Express.js, TypeScript, PostgreSQL, Pris
 - **PostgreSQL** - Relational database with Prisma ORM
 - **Kakao OAuth** - Social authentication with Kakao
 - **JWT Authentication** - Secure token-based authentication
-- **Input Validation** - Request validation using express-validator
+- **Yup Validation** - Schema-based request validation
+- **Input Validation** - Comprehensive request validation using Yup
 - **Security Middleware** - Helmet, CORS, rate limiting
 - **Error Handling** - Comprehensive error handling middleware
 - **Swagger Documentation** - Interactive API documentation
 - **Code Quality** - ESLint configuration with TypeScript support
 - **Environment Configuration** - Environment-based configuration
 - **Logging** - Structured logging utility
+- **Database Management** - Prisma ORM with connection pooling
 
 ## 📁 Project Structure
 
@@ -23,15 +25,16 @@ A robust Node.js backend API built with Express.js, TypeScript, PostgreSQL, Pris
 JangbiGO-backend/
 ├── src/
 │   ├── config/             # Configuration files
-│   │   ├── database.ts     # PostgreSQL connection
+│   │   ├── database.ts     # PostgreSQL connection management
 │   │   ├── passport.ts     # Passport OAuth configuration
 │   │   └── swagger.ts      # Swagger documentation config
 │   ├── lib/                # Library files
-│   │   └── prisma.ts       # Prisma client instance
+│   │   └── prisma.ts       # Prisma client instance (shared)
 │   ├── middleware/         # Custom middleware
 │   │   ├── auth.ts         # Authentication middleware
 │   │   ├── errorHandler.ts # Error handling
 │   │   └── notFound.ts     # 404 handler
+│   ├── models/             # Data models (if needed)
 │   ├── prisma/             # Prisma schema and migrations
 │   │   └── schema.prisma   # Database schema
 │   ├── routes/             # API routes
@@ -41,11 +44,12 @@ JangbiGO-backend/
 │   ├── types/              # TypeScript interfaces
 │   │   └── index.ts        # Type definitions
 │   ├── utils/              # Utility functions
-│   │   └── logger.ts       # Logging utility
+│   │   ├── logger.ts       # Logging utility
 │   └── app.ts              # Main application file
 ├── .env.example            # Environment variables template
 ├── .eslintrc.js           # ESLint configuration
 ├── .gitignore             # Git ignore rules
+├── jest.config.js         # Jest testing configuration
 ├── nodemon.json           # Nodemon configuration
 ├── package.json           # Dependencies and scripts
 ├── tsconfig.json          # TypeScript configuration
@@ -148,134 +152,14 @@ CORS_ORIGIN=http://localhost:3000
 # Rate Limiting
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
+
+# File Upload
+MAX_FILE_SIZE=5242880
+UPLOAD_PATH=./uploads
+
+# Logging
+LOG_LEVEL=info
 ```
-
-## 📚 API Documentation
-
-Visit `http://localhost:3000/api-docs` for interactive Swagger documentation.
-
-### Authentication Endpoints
-
-#### Register User
-
-```http
-POST /api/auth/register
-Content-Type: application/json
-
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
-
-#### Login User
-
-```http
-POST /api/auth/login
-Content-Type: application/json
-
-{
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
-
-#### Kakao OAuth Login
-
-```http
-GET /api/auth/kakao
-```
-
-Redirects to Kakao OAuth page.
-
-#### Kakao OAuth Callback
-
-```http
-GET /api/auth/kakao/callback
-```
-
-Handles OAuth callback and returns JWT token.
-
-#### Get Current User
-
-```http
-GET /api/auth/me
-Authorization: Bearer <token>
-```
-
-### User Endpoints
-
-#### Get All Users (Admin only)
-
-```http
-GET /api/users
-Authorization: Bearer <token>
-```
-
-#### Get Single User
-
-```http
-GET /api/users/:id
-Authorization: Bearer <token>
-```
-
-#### Update User
-
-```http
-PUT /api/users/:id
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "name": "Updated Name",
-  "email": "updated@example.com"
-}
-```
-
-#### Delete User (Admin only)
-
-```http
-DELETE /api/users/:id
-Authorization: Bearer <token>
-```
-
-### Health Check
-
-#### Get API Status
-
-```http
-GET /api/health
-```
-
-## 🗄️ Database
-
-This project uses PostgreSQL with Prisma ORM. The database schema includes:
-
-### Models
-
-- **User** - User accounts with Kakao OAuth integration
-- **Post** - User posts with content and images
-- **Comment** - Comments on posts
-- **Like** - Post likes with unique constraints
-
-### Features
-
-- Relational database with proper foreign key constraints
-- Automatic timestamps (createdAt, updatedAt)
-- Unique constraints for data integrity
-- Cascade deletes for related data
-- Kakao OAuth integration (kakaoId)
-
-## 🔒 Security Features
-
-- **Helmet** - Security headers
-- **CORS** - Cross-origin resource sharing
-- **Rate Limiting** - API rate limiting
-- **Input Validation** - Request data validation
-- **JWT Authentication** - Token-based authentication
-- **Password Hashing** - bcrypt password hashing
-- **OAuth 2.0** - Kakao social authentication
 
 ## 🚀 Deployment
 
@@ -309,13 +193,26 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
+## 🧪 Testing
+
+The project includes Jest configuration for testing:
+
+```bash
+# Run tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Run linting: `npm run lint`
-5. Submit a pull request
+5. Run tests: `npm test`
+6. Submit a pull request
 
 ## 📄 License
 
