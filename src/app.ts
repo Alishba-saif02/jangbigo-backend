@@ -5,6 +5,7 @@ import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
+import authRoutes from './routes/auth.routes'
 
 import { connectDB, disconnectDB } from "./config/database";
 import { specs } from "./config/swagger";
@@ -56,10 +57,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 // Routes
 app.use("/api/health", healthRoutes);
 
+const PORT = process.env["PORT"] || 3000;
+app.use('/api/auth', authRoutes);
 // 404 handler
 app.use(notFound);
-
-const PORT = process.env["PORT"] || 3000;
 
 if (process.env["NODE_ENV"] !== "test") {
   const server = app.listen(PORT, () => {

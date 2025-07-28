@@ -9,3 +9,50 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model Equipment {
+  id Int @id @default(autoincrement())
+  title String // Name or title of the equipment (e.g., "5 Ton Crane")
+  description String?
+  category String? // Type/category (e.g., crane, excavator) – could also be
+  //enum if predefined
+  location String? // Location or area of operation
+  owner User @relation("UserEquipment", fields: [ownerId], references:[id])
+  ownerId Int
+  // File relation
+  images EquipmentImage[] // images/docs associated with this equipment
+  // Rental requests relation
+  //requests RentalRequest[] @relation("EquipmentRequests")
+  available Boolean @default(true) // availability status
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model User {
+  id       Int     @id @default(autoincrement())
+  username String
+  email    String  @unique
+  password String
+  role     Role    @default(USER)
+  equipment Equipment[] @relation("UserEquipment")
+  isVerified Boolean @default(false)
+  createdAt DateTime @default(now())
+  otpCode OtpCode[]
+}
+model OtpCode {
+  id        Int      @id @default(autoincrement())
+  code      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int   @unique
+  createdAt DateTime @default(now())
+}
+enum Role {
+  USER
+  ADMIN
+}
+model EquipmentImage {
+  id          Int        @id @default(autoincrement())
+  url         String     // Image URL (local or cloud)
+  equipment   Equipment  @relation(fields: [equipmentId], references: [id])
+  equipmentId Int
+  createdAt   DateTime   @default(now())
+}
+
