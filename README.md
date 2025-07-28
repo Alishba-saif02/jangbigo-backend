@@ -7,12 +7,9 @@ A robust Node.js backend API built with Express.js, TypeScript, PostgreSQL, Pris
 - **Express.js** - Fast, unopinionated web framework
 - **TypeScript** - Type-safe JavaScript development
 - **PostgreSQL** - Relational database with Prisma ORM
-- **Kakao OAuth** - Social authentication with Kakao
-- **JWT Authentication** - Secure token-based authentication
 - **Yup Validation** - Schema-based request validation
 - **Input Validation** - Comprehensive request validation using Yup
 - **Security Middleware** - Helmet, CORS, rate limiting
-- **Error Handling** - Comprehensive error handling middleware
 - **Swagger Documentation** - Interactive API documentation
 - **Code Quality** - ESLint configuration with TypeScript support
 - **Environment Configuration** - Environment-based configuration
@@ -26,20 +23,15 @@ JangbiGO-backend/
 ├── src/
 │   ├── config/             # Configuration files
 │   │   ├── database.ts     # PostgreSQL connection management
-│   │   ├── passport.ts     # Passport OAuth configuration
 │   │   └── swagger.ts      # Swagger documentation config
 │   ├── lib/                # Library files
 │   │   └── prisma.ts       # Prisma client instance (shared)
 │   ├── middleware/         # Custom middleware
-│   │   ├── auth.ts         # Authentication middleware
-│   │   ├── errorHandler.ts # Error handling
 │   │   └── notFound.ts     # 404 handler
 │   ├── models/             # Data models (if needed)
 │   ├── prisma/             # Prisma schema and migrations
 │   │   └── schema.prisma   # Database schema
 │   ├── routes/             # API routes
-│   │   ├── auth.ts         # Authentication routes
-│   │   ├── users.ts        # User management routes
 │   │   └── health.ts       # Health check route
 │   ├── types/              # TypeScript interfaces
 │   │   └── index.ts        # Type definitions
@@ -98,15 +90,8 @@ JangbiGO-backend/
    npm run db:migrate
    ```
 
-6. **Set up Kakao OAuth**
 
-   - Go to [Kakao Developers](https://developers.kakao.com/)
-   - Create a new application
-   - Get your Client ID and Client Secret
-   - Set the redirect URI to `http://localhost:3000/api/auth/kakao/callback`
-   - Update `KAKAO_CLIENT_ID` and `KAKAO_CLIENT_SECRET` in your `.env` file
-
-7. **Start the development server**
+6. **Start the development server**
    ```bash
    npm run dev
    ```
@@ -140,11 +125,6 @@ DATABASE_URL="postgresql://username:password@localhost:5432/jangbigo_db?schema=p
 # JWT Configuration
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 JWT_EXPIRES_IN=24h
-
-# Kakao OAuth Configuration
-KAKAO_CLIENT_ID=your-kakao-client-id
-KAKAO_CLIENT_SECRET=your-kakao-client-secret
-KAKAO_CALLBACK_URL=http://localhost:3000/api/auth/kakao/callback
 
 # CORS Configuration
 CORS_ORIGIN=http://localhost:3000
