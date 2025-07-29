@@ -24,49 +24,70 @@ export const EquipmentController = {
         }
     },
 
-    async findById(_req: Request, res: Response) {
-        try {
-            const id = parseInt(_req.params.id);
-            if (isNaN(id)) {
-                return res.status(400).json({ success: false, message: 'Invalid equipment ID' });
-            }
+    async findById(req: Request, res: Response) {
+    try {
+        const idParam = req.params['id'];
 
-            const result = await service.getEquipmentById(id);
-            return res.status(200).json({ success: true, data: result });
-        } catch (error: any) {
-            console.error('[Get Equipment By ID Controller]', error.message);
-            const status = error.message === 'Equipment not found' ? 404 : 500;
-            return res.status(status).json({ success: false, message: error.message });
+        if (!idParam) {
+            return res.status(400).json({ success: false, message: 'ID is required' });
         }
-    },
+
+        const id = parseInt(idParam, 10);
+
+        if (isNaN(id)) {
+            return res.status(400).json({ success: false, message: 'Invalid ID format' });
+        }
+
+        const result = await service.getEquipmentById(id);
+        return res.status(200).json({ success: true, data: result });
+    } catch (error: any) {
+        console.error('[Get Equipment By ID]', error.message);
+        return res.status(404).json({ success: false, message: error.message });
+    }
+},
 
     async update(req: Request, res: Response) {
-        try {
-            const id = parseInt(req.params.id);
-            if (isNaN(id)) {
-                return res.status(400).json({ success: false, message: 'Invalid equipment ID' });
-            }
+    try {
+        const idParam = req.params['id'];
 
-            const result = await service.updateEquipment(id, req.body);
-            return res.status(200).json({ success: true, data: result });
-        } catch (error: any) {
-            console.error('[Update Equipment Controller]', error.message);
-            return res.status(400).json({ success: false, message: error.message });
+        if (!idParam) {
+            return res.status(400).json({ success: false, message: 'ID is required' });
         }
-    },
+
+        const id = parseInt(idParam, 10);
+
+        if (isNaN(id)) {
+            return res.status(400).json({ success: false, message: 'Invalid ID format' });
+        }
+
+        const result = await service.updateEquipment(id, req.body);
+        return res.status(200).json({ success: true, data: result });
+    } catch (error: any) {
+        console.error('[Update Equipment]', error.message);
+        return res.status(400).json({ success: false, message: error.message });
+    }
+},
 
     async delete(req: Request, res: Response) {
-        try {
-            const id = parseInt(req.params.id);
-            if (isNaN(id)) {
-                return res.status(400).json({ success: false, message: 'Invalid equipment ID' });
-            }
+    try {
+        const idParam = req.params['id'];
 
-            await service.deleteEquipment(id);
-            return res.status(200).json({ success: true, message: 'Equipment deleted successfully' });
-        } catch (error: any) {
-            console.error('[Delete Equipment Controller]', error.message);
-            return res.status(400).json({ success: false, message: error.message });
+        if (!idParam) {
+            return res.status(400).json({ success: false, message: 'ID is required' });
         }
-    },
+
+        const id = parseInt(idParam, 10);
+
+        if (isNaN(id)) {
+            return res.status(400).json({ success: false, message: 'Invalid ID format' });
+        }
+
+        await service.deleteEquipment(id);
+        return res.status(200).json({ success: true, message: 'Deleted successfully' });
+    } catch (error: any) {
+        console.error('[Delete Equipment]', error.message);
+        return res.status(400).json({ success: false, message: error.message });
+    }
+}
+
 };
