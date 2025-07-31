@@ -14,6 +14,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "removeComments": true,
+"typeRoots": ["./node_modules/@types", "./src/types"],
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -24,7 +25,6 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
-  "typeRoots": ["./node_modules/@types", "./src/types"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

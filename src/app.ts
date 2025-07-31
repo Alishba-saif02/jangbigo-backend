@@ -7,6 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 import authRoutes from './routes/auth.routes'
 
+
 import { connectDB, disconnectDB } from "./config/database";
 import { specs } from "./config/swagger";
 
@@ -14,6 +15,7 @@ import notFound from "./middleware/notFound";
 
 // Import routes
 import healthRoutes from "./routes/health";
+import equipmentRoutes from "./routes/equipment.routes";
 
 // Load environment variables
 dotenv.config();
@@ -59,6 +61,7 @@ app.use("/api/health", healthRoutes);
 
 const PORT = process.env["PORT"] || 3000;
 app.use('/api/auth', authRoutes);
+app.use('/api/equipments', equipmentRoutes);
 // 404 handler
 app.use(notFound);
 
