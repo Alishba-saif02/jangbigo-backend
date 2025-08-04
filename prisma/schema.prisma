@@ -13,8 +13,7 @@ model Equipment {
   id Int @id @default(autoincrement())
   title String // Name or title of the equipment (e.g., "5 Ton Crane")
   description String?
-  category String? // Type/category (e.g., crane, excavator) – could also be
-  //enum if predefined
+  category Category? // Type/category (e.g., crane, excavator) – could also be enum if predefined
   location String? // Location or area of operation
   owner User @relation("UserEquipment", fields: [ownerId], references:[id])
   ownerId Int
@@ -27,6 +26,13 @@ model Equipment {
   updatedAt DateTime @updatedAt
   user User[]
 }
+enum Category {
+  HeavyMachinery
+  LightMachinery
+  Tools
+  Vehicles
+}
+
 model User {
   id       Int     @id @default(autoincrement())
   username String
